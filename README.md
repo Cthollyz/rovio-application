@@ -14,13 +14,13 @@ Required:
 
 converts lla coordinates to local coordanates(ENU, NED etc.)
 
-*wgs_conversions (https://github.com/gyjun0230/wgs_conversions)
+* wgs_conversions (https://github.com/gyjun0230/wgs_conversions)
 
 User dependent:
 
 This conatins the header files for GNSS-RTK equipment used in this project, users should use dependencies for their own equipment.  
 
-*novatel_oem7_drivers (https://github.com/novatel/novatel_oem7_driver) 
+* novatel_oem7_drivers (https://github.com/novatel/novatel_oem7_driver) 
 
 
 ### Original ROVIO README ###
