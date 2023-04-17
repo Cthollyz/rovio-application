@@ -74,7 +74,7 @@ class FeatureTrackerNode{
   FeatureTrackerNode(ros::NodeHandle& nh): nh_(nh), fsm_(&multiCamera_){
     static_assert(l2>=l1, "l2 must be larger than l1");
     subImu_ = nh_.subscribe("imuMeas", 1000, &FeatureTrackerNode::imuCallback,this);
-    subImg_ = nh_.subscribe("/cam0/image_raw", 1000, &FeatureTrackerNode::imgCallback,this);
+    subImg_ = nh_.subscribe("/zed2/zed_node/left_uncomp/image_rect_color", 1000, &FeatureTrackerNode::imgCallback,this);
     min_feature_count_ = 50;
     max_feature_count_ = 20; // Maximal number of feature which is added at a time (not total)
     cv::namedWindow("Tracker");
@@ -109,13 +109,17 @@ class FeatureTrackerNode{
   void imgCallback(const sensor_msgs::ImageConstPtr & img_msg){
     // Get image from msg
     cv_bridge::CvImagePtr cv_ptr;
+    //cv_bridge::cvtColor( brg_msg, img_msg, CV_BGR2GRAY );
+
     try {
-      cv_ptr = cv_bridge::toCvCopy(img_msg, sensor_msgs::image_encodings::TYPE_8UC1);
+      cv_ptr = cv_bridge::toCvCopy(img_msg, sensor_msgs::image_encodings::TYPE_8UC4);
     } catch (cv_bridge::Exception& e) {
       ROS_ERROR("cv_bridge exception: %s", e.what());
       return;
     }
-    cv_ptr->image.copyTo(img_);
+    cv::Mat tmp_img_;
+    cv_ptr->image.copyTo(tmp_img_);
+    cvtColor( tmp_img_, img_, CV_BGR2GRAY );
 
     // Timing
     static double last_time = 0.0;

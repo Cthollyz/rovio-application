@@ -1,5 +1,21 @@
 # README #
 
+### Modifications made in this fork ###
+
+1.Lets rovio use rosbags with brga format images 
+2.Alternative visualization with rviz, with template config file provided (The original rovio uses an opengl visaulization scene)
+3.Added GNSS-RTK groundtruth (coordinate transform to local world frame depends on experiment setup of the user)
+4.Additional dependencies: 
+Required:
+converts lla coordinates to local coordanates(ENU, NED etc.)
+*wgs_conversions (https://github.com/gyjun0230/wgs_conversions)
+User dependent:
+This conatins the header files for GNSS-RTK equipment used in this project, users should use dependencies for their own equipment.  
+*novatel_oem7_drivers (https://github.com/novatel/novatel_oem7_driver) 
+
+
+### Orignal ROVIO README ###
+
 This repository contains the ROVIO (Robust Visual Inertial Odometry) framework. The code is open-source (BSD License). Please remember that it is strongly coupled to on-going research and thus some parts are not fully mature yet. Furthermore, the code will also be subject to changes in the future which could include greater re-factoring of some parts.
 
 Video: https://youtu.be/ZMAISVy-6ao

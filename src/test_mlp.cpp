@@ -49,6 +49,7 @@ class MLPTesting : public virtual ::testing::Test {
     stat_.minGlobalQualityRange_ = 5;
 
     img1_ = cv::Mat::zeros(imgSize_,imgSize_,CV_8UC1);
+    //img1_ = np.asarray(bridge.imgmsg_to_cv2(img1_, 'mono8'))
     uint8_t* img_ptr = (uint8_t*) img1_.data;
     for(int i=0;i<imgSize_;i++){
       for(int j=0;j<imgSize_;j++, ++img_ptr){
@@ -56,6 +57,7 @@ class MLPTesting : public virtual ::testing::Test {
       }
     }
     img2_ = cv::Mat::zeros(imgSize_,imgSize_,CV_8UC1);
+    //img2_ = np.asarray(bridge.imgmsg_to_cv2(img2_, 'mono8'))
     img_ptr = (uint8_t*) img2_.data;
     for(int i=0;i<imgSize_;i++){
       for(int j=0;j<imgSize_;j++, ++img_ptr){
@@ -337,6 +339,7 @@ TEST_F(MLPTesting, levelTranformCoordinates) {
   FeatureCoordinates c2;
   c_.set_c(cv::Point2f(1,1));
   img1_ = cv::Mat::zeros(16,16,CV_8UC1);
+  //img1_ = np.asarray(bridge.imgmsg_to_cv2(img1_, 'mono8'))
   pyr.computeFromImage(img1_);
   ASSERT_EQ(pyr.centers_[0].x,0.0);
   ASSERT_EQ(pyr.centers_[0].y,0.0);
@@ -354,6 +357,7 @@ TEST_F(MLPTesting, levelTranformCoordinates) {
     }
   }
   img1_ = cv::Mat::zeros(15,10,CV_8UC1);
+  //img1_ = np.asarray(bridge.imgmsg_to_cv2(img1_, 'mono8'))
   pyr.computeFromImage(img1_);
   ASSERT_EQ(pyr.centers_[0].x,0.0);
   ASSERT_EQ(pyr.centers_[0].y,0.0);

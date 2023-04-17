@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.6)
 project(rovio)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -march=native")
 set(ROVIO_NMAXFEATURE 25 CACHE STRING "Number of features for ROVIO")
-set(ROVIO_NCAM 1 CACHE STRING "Number of enabled cameras")
+set(ROVIO_NCAM 2 CACHE STRING "Number of enabled cameras")
 set(ROVIO_NLEVELS 4 CACHE STRING "Number of image leavels for the features")
 set(ROVIO_PATCHSIZE 6 CACHE STRING "Size of patch (edge length in pixel)")
 set(ROVIO_NPOSE 0 CACHE STRING "Additional estimated poses for external pose measurements")
@@ -13,6 +13,10 @@ add_definitions(-DROVIO_PATCHSIZE=${ROVIO_PATCHSIZE})
 add_definitions(-DROVIO_NPOSE=${ROVIO_NPOSE})
 
 add_subdirectory(lightweight_filtering)
+set(CMAKE_PREFIX_PATH )
+foreach(path ${CMAKE_PREFIX_PATH})
+  message("Path: " ${path})
+endforeach(path)
 
 ##################### Find, include, and compile library #####################
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -55,10 +59,12 @@ else()
 endif()
 
 
+
 ##################### Install ROS stuff #####################
 find_package(catkin REQUIRED COMPONENTS
 	lightweight_filtering
   	kindr
+	wgs_conversions
 	roscpp
 	roslib
 	cv_bridge
@@ -69,6 +75,7 @@ find_package(catkin REQUIRED COMPONENTS
 	std_msgs
 	tf
 	rosbag
+    novatel_oem7_driver
 )
 
 add_service_files(
@@ -85,6 +92,7 @@ catkin_package(
 	INCLUDE_DIRS include ${catkin_INCLUDE_DIRS}
     LIBRARIES ${PROJECT_NAME}
 	CATKIN_DEPENDS
+	wgs_conversions
 	lightweight_filtering
   	kindr
 	roscpp
@@ -98,6 +106,7 @@ catkin_package(
 	tf
 	rosbag
   yaml_cpp_catkin
+	novatel_oem7_driver
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS} ${YamlCpp_INCLUDE_DIRS})
@@ -107,7 +116,7 @@ if(MAKE_SCENE)
 else()
 	add_library(${PROJECT_NAME} src/Camera.cpp src/FeatureCoordinates.cpp src/FeatureDistance.cpp)
 endif()
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${YamlCpp_LIBRARIES} ${OpenMP_EXE_LINKER_FLAGS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARY} ${OpenCV_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${YamlCpp_LIBRARIES} ${OpenMP_EXE_LINKER_FLAGS} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${GLEW_LIBRARIES} ${OpenCV_LIBRARIES})
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} rovio_generate_messages_cpp)
 
 add_executable(rovio_node src/rovio_node.cpp)
@@ -120,6 +129,7 @@ add_dependencies(rovio_rosbag_loader ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catki
 add_executable(feature_tracker_node src/feature_tracker_node.cpp)
 target_link_libraries(feature_tracker_node ${PROJECT_NAME})
 add_dependencies(feature_tracker_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/gtest/")
 	message(STATUS "Building GTests!")
