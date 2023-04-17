@@ -2,9 +2,12 @@
 
 ### Modifications made in this fork ###
 
-1.Lets rovio use rosbags with brga format images 
+1.Lets rovio use rosbags with brga format images
+ 
 2.Alternative visualization with rviz, with template config file provided (The original rovio uses an opengl visaulization scene)
+
 3.Added GNSS-RTK groundtruth (coordinate transform to local world frame depends on experiment setup of the user)
+
 4.Additional dependencies: 
 Required:
 converts lla coordinates to local coordanates(ENU, NED etc.)
