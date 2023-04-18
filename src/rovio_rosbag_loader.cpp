@@ -153,11 +153,11 @@ int main(int argc, char** argv){
   dst << src.rdbuf();
 
   std::vector<std::string> topics;
-  std::string imu_topic_name = "/imu0";
+  std::string imu_topic_name = "/zed2/zed_node/imu/data_raw";
   nh_private.param("imu_topic_name", imu_topic_name, imu_topic_name);
-  std::string cam0_topic_name = "/cam0/image_raw";
+  std::string cam0_topic_name = "/zed2/zed_node/left_uncomp/image_rect_color";
   nh_private.param("cam0_topic_name", cam0_topic_name, cam0_topic_name);
-  std::string cam1_topic_name = "/cam1/image_raw";
+  std::string cam1_topic_name = "/zed2/zed_node/right_uncomp/image_rect_color";
   nh_private.param("cam1_topic_name", cam1_topic_name, cam1_topic_name);
   std::string odometry_topic_name = rovioNode.pubOdometry_.getTopic();
   std::string transform_topic_name = rovioNode.pubTransform_.getTopic();

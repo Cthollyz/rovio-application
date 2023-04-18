@@ -60,6 +60,7 @@
 
 #include "novatel_oem7_msgs/BESTPOS.h"
 #include "wgs_conversions/wgs_conversions.h"
+#include "novatel_oem7_msgs/HEADING2.h"
 
 namespace rovio {
 
@@ -145,7 +146,7 @@ namespace rovio {
         ros::Subscriber subGroundtruth_;
         ros::Subscriber subGroundtruthOdometry_;
         ros::Subscriber subGNSSGroundtruth_;     /**subsribed to GNSS signals to visualize groundtruth trajectory*/
-        ros::Subsciber subGNSSGroundtruthHeading; /**subscribed to get the dual antenna heading(see callback function for descriptions)*/
+        ros::Subscriber subGNSSGroundtruthHeading; /**subscribed to get the dual antenna heading(see callback function for descriptions)*/
         ros::Subscriber subVelocity_;
         ros::ServiceServer srvResetFilter_;
         ros::ServiceServer srvResetToPoseFilter_;
@@ -586,7 +587,7 @@ namespace rovio {
          *
    */
 
-        void GNSSHeadingCallback(const novatel_oem7_msgs::DUALANTENNAHEADING::ConstPtr& headingmsg) {
+        void GNSSHeadingCallback(const novatel_oem7_msgs::HEADING2::ConstPtr& headingmsg) {
 
             if(isFirstGNSSHeading==true)
             {
@@ -625,7 +626,7 @@ namespace rovio {
              /**transform the gnss goundtruth position from local enu to the local world rovio frame*/
             groundtruth_temp_pose.pose.position.x = sin(M_PI/2+gnssheading)*currentGT_enu[0]-cos(M_PI/2+gnssheading)*currentGT_enu[1];
             groundtruth_temp_pose.pose.position.y = -currentGT_enu[2];
-            groundtruth_temp_pose.pose.position.z = cos(M_PI/2+gnssheading)*currentGT_enu[0]+ sin(M_PI/2+gnssheading)currentGT_enu[1];
+            groundtruth_temp_pose.pose.position.z = cos(M_PI/2+gnssheading)*currentGT_enu[0]+ sin(M_PI/2+gnssheading)*currentGT_enu[1];
 
             if(init_state_.isInitialized()){
                 updateAndPublish();
